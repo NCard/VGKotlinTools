@@ -9,6 +9,9 @@ fun Any.propertyDescriptors(): Array<PropertyDescriptor> {
 }
 
 fun Any.foreachProperty(action: (String, Any?) -> Unit) {
+
+    fun String.isClass(): Boolean = this.compareTo(other = "class", ignoreCase = true) == 0
+
     propertyDescriptors().forEach {
         val key = it.name
         val getter = it.readMethod
@@ -20,6 +23,3 @@ fun Any.foreachProperty(action: (String, Any?) -> Unit) {
     }
 }
 
-fun String.isClass(): Boolean {
-    return this.compareTo(other = "class", ignoreCase = true) == 0
-}
