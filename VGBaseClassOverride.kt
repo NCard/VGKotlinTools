@@ -1,4 +1,4 @@
-package VGTools
+package vgTools
 
 import java.beans.Introspector
 import java.beans.PropertyDescriptor

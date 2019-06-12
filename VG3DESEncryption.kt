@@ -1,4 +1,4 @@
-package VGTools
+package vgTools
 
 import java.lang.Exception
 import javax.crypto.Cipher

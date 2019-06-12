@@ -1,4 +1,4 @@
-package VGTools
+package vgTools
 
 import org.w3c.dom.Document
 import org.w3c.dom.Element

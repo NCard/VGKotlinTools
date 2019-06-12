@@ -1,4 +1,4 @@
-package VGTools
+package vgTools
 
 import java.io.BufferedReader
 import java.io.InputStreamReader
