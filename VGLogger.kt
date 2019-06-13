@@ -12,22 +12,21 @@ class VGLogger(
 ) {
     var logger: Logger? = null
         get() {
-            if (field == null) logger = buildLogger()
+            if (field == null) buildLogger()
             return field
         }
     private val sdf = SimpleDateFormat("yyyy-MM-dd")
     private val fileName = "$name.${sdf.format(Date())}.log"
     private val fileHandler = FileHandler(fileName, true)
 
-    private fun buildLogger(): Logger {
-        val logger = Logger.getLogger(name)
+    private fun buildLogger() {
+        logger = Logger.getLogger(name)
         settingFileHandler()
         addHandler()
-        return logger
     }
 
     private fun settingFileHandler() {
-        fileHandler.level = Level.ALL
+        fileHandler.level = Level.WARNING
         fileHandler.formatter = SimpleFormatter()
     }
 
