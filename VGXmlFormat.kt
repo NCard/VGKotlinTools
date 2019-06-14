@@ -42,8 +42,8 @@ class VGXmlFormat<T : Any> {
         this.appendChild(nameSpaceElement)
     }
 
-    private fun Element.appendChildrenFromObject(data: T) {
-        data.foreachProperty {
+    private fun Element.appendChildrenFromObject(data: T?) {
+        data?.foreachProperty {
             key, value ->
             this.appendChild(doc.createElement(key).appendText(value = value))
         }

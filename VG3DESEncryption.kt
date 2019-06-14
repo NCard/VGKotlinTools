@@ -18,7 +18,7 @@ class VG3DESEncryption(
     private val keyFactory = SecretKeyFactory.getInstance(desMode.value)
     private val desKey = keyFactory.generateSecret(spec)
 
-    private var cipher: Cipher? = null
+    private lateinit var cipher: Cipher
 
     enum class DesMode(val value: String) {
         EDE("desede")
@@ -54,12 +54,12 @@ class VG3DESEncryption(
 
         cipherInit(encryptionType, encryptionMode, ivParameterSpec)
 
-        return cipher!!.doFinal(data)
+        return cipher.doFinal(data)
     }
 
     private fun cipherInit(encryptionType: EncryptionType, encryptionMode: EncryptionMode, ivParameterSpec: IvParameterSpec) {
-        if (encryptionType.isCBC()) cipher!!.init(encryptionMode.value, desKey, ivParameterSpec)
-        else cipher!!.init(encryptionMode.value, desKey)
+        if (encryptionType.isCBC()) cipher.init(encryptionMode.value, desKey, ivParameterSpec)
+        else cipher.init(encryptionMode.value, desKey)
     }
 
     private fun instantiationCipher (encryptionType: EncryptionType) {
