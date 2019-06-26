@@ -41,3 +41,7 @@ fun Any.setValueByMap(map: MutableMap<String, Any?>) {
         else setter?.invoke(this, map[key])
     }
 }
+
+fun List<Any>.toMap(): Map<String, ClassDetail> {
+    return this.map { this.indexOf(it) to it }.toMap()
+}
