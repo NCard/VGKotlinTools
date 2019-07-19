@@ -9,7 +9,7 @@ fun Any.propertyDescriptors(): Array<PropertyDescriptor> {
     return beanInfo.propertyDescriptors
 }
 
-fun Any.foreachProperty(action: (key: String, value: Any?, setter: Method?) -> Unit) {
+inline fun Any.foreachProperty(action: (key: String, value: Any?, setter: Method?) -> Unit) {
 
     fun String.isClass(): Boolean = this.compareTo(other = "class", ignoreCase = true) == 0
 
