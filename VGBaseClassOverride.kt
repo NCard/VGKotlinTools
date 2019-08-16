@@ -4,14 +4,12 @@ import java.beans.Introspector
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
 
-fun Any.propertyDescriptors(): Array<PropertyDescriptor> {
-    val beanInfo = Introspector.getBeanInfo(this.javaClass)
+fun <T> T.propertyDescriptors(): Array<PropertyDescriptor> {
+    val beanInfo = Introspector.getBeanInfo(this?.javaClass)
     return beanInfo.propertyDescriptors
 }
 
-inline fun Any.foreachProperty(action: (key: String, value: Any?, setter: Method?) -> Unit) {
-
-    fun String.isClass(): Boolean = this.compareTo(other = "class", ignoreCase = true) == 0
+inline fun <T> T.foreachProperty(action: (key: String, value: Any?, setter: Method?) -> Unit) {
 
     propertyDescriptors().forEach {
         val key = it.name
@@ -19,29 +17,29 @@ inline fun Any.foreachProperty(action: (key: String, value: Any?, setter: Method
         val setter = it.writeMethod
         val value = getter?.invoke(this)
 
-        if (key.isClass()) return@forEach
+        if (key == "class") return@forEach
 
         action(key, value, setter)
     }
 }
 
 @Throws(Exception::class)
-fun Any.toMap(): MutableMap<String, Any?> {
+fun <T> T.toMap(): MutableMap<String, Any?> {
     val map = mutableMapOf<String, Any?>()
-    this.foreachProperty { key, value, _ ->
+    this?.foreachProperty { key, value, _ ->
         map[key] = value
     }
     return map
 }
 
 @Throws(Exception::class)
-fun Any.setValueByMap(map: MutableMap<String, Any?>) {
-    this.foreachProperty { key, _, setter ->
+fun <T> T.setValueByMap(map: MutableMap<String, Any?>) {
+    this?.foreachProperty { key, _, setter ->
         if (map[key] == null) return@foreachProperty
         else setter?.invoke(this, map[key])
     }
 }
 
-fun List<Any>.toMap(): Map<String, ClassDetail> {
+fun <T> List<T>.toMap(): Map<String, Any?> {
     return this.map { this.indexOf(it) to it }.toMap()
 }
