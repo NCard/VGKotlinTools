@@ -1,9 +1,10 @@
-package com.gbtech.lanfarapi.vgTools
+package vgTools
 
 import java.beans.Introspector
 import java.beans.PropertyDescriptor
 import java.lang.reflect.Method
-import kotlin.reflect.typeOf
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 
 fun Any.propertyDescriptors(): Array<PropertyDescriptor> {
     val beanInfo = Introspector.getBeanInfo(this.javaClass)
@@ -72,6 +73,7 @@ fun typeSwitch(type: Class<*>, value: Any?): Any? {
                 is Double -> value.toFloat()
                 else -> value
             }
+        "java.lang.String" -> value.toString()
         else -> value
     }
 }
@@ -81,3 +83,21 @@ fun List<Any>.toMap(): Map<String, Any?> {
 }
 
 operator fun MutableMap<String, Any?>.plus(other: MutableMap<String, Any?>): MutableMap<String, Any?> = this + other
+
+fun Timestamp.isInDate(checkedDate: Timestamp, rangeDate: Int): Boolean {
+
+    val startDate = Timestamp(this.time)
+    val endDate = startDate + rangeDate
+    return checkedDate.inRange(startDate, endDate)
+}
+
+operator fun Timestamp.plus(date: Int): Timestamp {
+    val newTime = Timestamp(this.time)
+    newTime.date = newTime.date + date
+    return newTime
+}
+
+fun Timestamp.inRange(startDate: Timestamp, endDate: Timestamp): Boolean {
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    return sdf.format(this) in sdf.format(startDate)..sdf.format(endDate)
+}
