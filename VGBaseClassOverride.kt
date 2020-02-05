@@ -59,6 +59,7 @@ fun Any.setValueByMap(map: MutableMap<String, Any?>) {
     }
 }
 
+@Throws(Exception::class)
 fun typeSwitch(type: Class<*>, value: Any?): Any? {
     return when (type.canonicalName) {
         "java.lang.Double" ->
@@ -74,6 +75,7 @@ fun typeSwitch(type: Class<*>, value: Any?): Any? {
                 else -> value
             }
         "java.lang.String" -> value.toString()
+        "java.lang.Boolean" -> value != 0
         else -> value
     }
 }
@@ -97,7 +99,16 @@ operator fun Timestamp.plus(date: Int): Timestamp {
     return newTime
 }
 
+operator fun Timestamp.minus(date: Int): Timestamp {
+    val newTime = Timestamp(this.time)
+    newTime.date = newTime.date - date
+    return newTime
+}
+
 fun Timestamp.inRange(startDate: Timestamp, endDate: Timestamp): Boolean {
     val sdf = SimpleDateFormat("yyyy-MM-dd")
     return sdf.format(this) in sdf.format(startDate)..sdf.format(endDate)
 }
+
+
+fun Timestamp.format(format: String = "yyyy-MM-dd HH:mm:ss.SSS"): String = SimpleDateFormat(format).format(this)
