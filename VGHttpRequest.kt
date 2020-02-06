@@ -14,12 +14,12 @@ object SSLSocketClient {
     @Throws(Exception::class)
     fun httpsRequest(requestUrl: String, requestMethod: String = "POST", data: String?, headers: MutableMap<String, String> = mutableMapOf()): String {
         var buffer: StringBuffer? = null
-        //创建SSLContext
+        //建立SSLContext
         val sslContext = SSLContext.getInstance("SSL")
         val tm = arrayOf<TrustManager>(MyX509TrustManager())
         //初始化
         sslContext.init(null, tm, java.security.SecureRandom())
-        //获取SSLSocketFactory对象
+        //獲取SSLSocketFactory物件
         val ssf = sslContext.socketFactory
         val url = URL(requestUrl)
         val conn = url.openConnection() as HttpsURLConnection
@@ -31,17 +31,17 @@ object SSLSocketClient {
         conn.useCaches = false
         conn.requestMethod = requestMethod
 
-        //设置当前实例使用的SSLSoctetFactory
+        //設置當前實例使用的SSLSoctetFactory
         conn.sslSocketFactory = ssf
         conn.connect()
 
-        //往服务器端写内容
+        //往伺服器端寫內容
         if (null != data) {
             val os = conn.outputStream
             os.write(data.toByteArray(charset("utf-8")))
             os.close()
         }
-        //读取服务器端返回的内容
+        //讀取伺服器端返回的内容
         val `is` = conn.inputStream
         val isr = InputStreamReader(`is`, "utf-8")
         val br = BufferedReader(isr)
